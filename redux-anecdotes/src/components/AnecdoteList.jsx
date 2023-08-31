@@ -5,6 +5,7 @@ import { vote } from '../reducers/anecdoteReducer'
 const AnecdoteList = () => {
 
     const anecdotes = useSelector(state => {
+        console.log(state)
         if (state.filter === 'ALL') {
             return state.anecdote
         }else {
