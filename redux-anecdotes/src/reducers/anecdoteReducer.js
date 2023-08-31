@@ -1,3 +1,16 @@
+export const anecdoteReducer = (state = initialState, action) => {
+  switch(action.type) {
+    case 'VOTE':
+      const id = action.payload.id
+      const anecdoteToVote = state.find(a => a.id === id)
+      const changedAncedote = {...anecdoteToVote, votes: anecdoteToVote.votes + 1}
+      return state.map(a => a.id !== id ? a : changedAncedote)
+    case 'NEW ANECDOTE':
+      return [...state, action.payload];
+    default: return state
+  }
+}
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -18,19 +31,6 @@ const asObject = (anecdote) => {
 }
 
 const initialState = anecdotesAtStart.map(asObject)
-
-export const anecdoteReducer = (state = initialState, action) => {
-  switch(action.type) {
-    case 'VOTE':
-      const id = action.payload.id
-      const anecdoteToVote = state.find(a => a.id === id)
-      const changedAncedote = {...anecdoteToVote, votes: anecdoteToVote.votes + 1}
-      return state.map(a => a.id !== id ? a : changedAncedote)
-    case 'NEW ANECDOTE':
-      return [...state, action.payload];
-    default: return state
-  }
-}
 
 export const vote = (id) => {
   return{
