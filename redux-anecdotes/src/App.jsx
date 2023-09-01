@@ -4,22 +4,14 @@ import AnecdoteList from './components/AnecdoteList'
 import Filter from './components/Filter'
 import Notification from './components/Notification'
 import { useDispatch } from 'react-redux'
-import { getAll } from './services/annecdotes'
-import { appendAnecdote } from './reducers/anecdoteReducer'
+import { initializeAnecdote } from './reducers/anecdoteReducer'
 
 const App = () => {
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        getAll().then(annecdotes => {
-            console.log(annecdotes, 'before foreEach')
-            annecdotes.forEach(annecdote => {
-                console.log(annecdote, 'while forEach')
-                dispatch(appendAnecdote(annecdote))
-            })
-          })
-          
+          dispatch(initializeAnecdote())
     }, [dispatch])
 
     return (
