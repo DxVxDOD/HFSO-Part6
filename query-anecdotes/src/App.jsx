@@ -3,6 +3,7 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { getAll, update } from './services/request'
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
+import NotificationContext from './components/NotificationContexr'
 
 const App = () => {
 
@@ -12,6 +13,8 @@ const App = () => {
         return action.message
       case "NULL":
         return state === null
+      case "ERROR":
+        return action.message
       default: return state
     }
   }
@@ -51,10 +54,11 @@ const App = () => {
   }
 
   return (
-    <div>
+    <NotificationContext.Provider value={[notification, notificationDispatch]} >
+      <div>
       <h3>Anecdote app</h3>
     
-      <Notification notification={notification} />
+      <Notification />
       <AnecdoteForm />
     
       {anecdotes.map(anecdote =>
@@ -69,6 +73,7 @@ const App = () => {
         </div>
       )}
     </div>
+    </NotificationContext.Provider>
   )
 }
 
