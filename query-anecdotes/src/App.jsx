@@ -1,25 +1,10 @@
-import { useReducer } from 'react'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { getAll, update } from './services/request'
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
-import NotificationContext from './components/NotificationContexr'
+import { useNotificationDispatch } from './components/NotificationContexr'
 
 const App = () => {
-
-  const notificationReducer = (state, action) => {
-    switch(action.type) {
-      case "VOTE":
-        return action.message
-      case "NULL":
-        return state === null
-      case "ERROR":
-        return action.message
-      default: return state
-    }
-  }
-
-  const [notification, notificationDispatch] = useReducer(notificationReducer, null)
 
   const queryClient = useQueryClient()
 
@@ -28,6 +13,8 @@ const App = () => {
       queryClient.invalidateQueries({queryKey: ['anecdotes']})
     }
   })
+
+  const notificationDispatch = useNotificationDispatch()
 
   const {data, isLoading, isError} = useQuery({
     queryKey: ['anecdotes'],
@@ -54,26 +41,24 @@ const App = () => {
   }
 
   return (
-    <NotificationContext.Provider value={[notification, notificationDispatch]} >
       <div>
-      <h3>Anecdote app</h3>
-    
-      <Notification />
-      <AnecdoteForm />
-    
-      {anecdotes.map(anecdote =>
-        <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
+        <h3>Anecdote app</h3>
+
+        <Notification />
+        <AnecdoteForm />
+
+        {anecdotes.map(anecdote =>
+          <div key={anecdote.id}>
+            <div>
+              {anecdote.content}
+            </div>
+            <div>
+              has {anecdote.votes}
+              <button onClick={() => handleVote(anecdote)}>vote</button>
+            </div>
           </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => handleVote(anecdote)}>vote</button>
-          </div>
-        </div>
-      )}
-    </div>
-    </NotificationContext.Provider>
+        )}
+      </div>
   )
 }
 
