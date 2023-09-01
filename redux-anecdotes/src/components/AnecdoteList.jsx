@@ -6,6 +6,7 @@ import { displayNotification, removeNotification } from '../reducers/notificatio
 const AnecdoteList = () => {
 
     const anecdotes = useSelector(state => {
+      console.log(state)
         if (state.filter === 'ALL') {
             return state.anecdote
         }else {
